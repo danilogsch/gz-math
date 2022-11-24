@@ -27,14 +27,14 @@
 #include <gz/math/Vector4.hh>
 #include <gz/math/config.hh>
 
-namespace ignition
+namespace gz
 {
   namespace math
   {
     // Inline bracket to help doxygen filtering.
-    inline namespace IGNITION_MATH_VERSION_NAMESPACE {
+    inline namespace GZ_MATH_VERSION_NAMESPACE {
     //
-    /// \class Polynomial3 Polynomial3.hh ignition/math/Polynomial3.hh
+    /// \class Polynomial3 Polynomial3.hh gz/math/Polynomial3.hh
     /// \brief The Polynomial3 class represents a cubic polynomial
     /// with real coefficients p(x) = c0 x^3 + c1 x^2 + c2 x + c3.
     /// ## Example

@@ -16,7 +16,7 @@
 */
 #ifndef GZ_MATH_DETAIL_CYLINDER_HH_
 #define GZ_MATH_DETAIL_CYLINDER_HH_
-namespace ignition
+namespace gz
 {
 namespace math
 {
@@ -120,7 +120,7 @@ bool Cylinder<T>::MassMatrix(MassMatrix3d &_massMat) const
 template<typename T>
 T Cylinder<T>::Volume() const
 {
-  return IGN_PI * std::pow(this->radius, 2) *
+  return GZ_PI * std::pow(this->radius, 2) *
          this->length;
 }
 

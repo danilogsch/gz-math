@@ -22,7 +22,7 @@
 #include "gz/math/Quaternion.hh"
 #include "gz/math/Plane.hh"
 
-namespace ignition
+namespace gz
 {
   namespace math
   {
@@ -30,9 +30,9 @@ namespace ignition
     class SpherePrivate;
 
     // Inline bracket to help doxygen filtering.
-    inline namespace IGNITION_MATH_VERSION_NAMESPACE {
+    inline namespace GZ_MATH_VERSION_NAMESPACE {
     //
-    /// \class Sphere Sphere.hh ignition/math/Sphere.hh
+    /// \class Sphere Sphere.hh gz/math/Sphere.hh
     /// \brief A representation of a sphere.
     ///
     /// The sphere class supports defining a sphere with a radius and
@@ -52,9 +52,6 @@ namespace ignition
       /// \param[in] _radius Radius of the sphere.
       /// \param[in] _mat Material property for the sphere.
       public: Sphere(const Precision _radius, const Material &_mat);
-
-      /// \brief Destructor
-      public: ~Sphere() = default;
 
       /// \brief Get the radius in meters.
       /// \return The radius of the sphere in meters.

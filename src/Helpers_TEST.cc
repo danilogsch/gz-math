@@ -17,9 +17,14 @@
 
 #include <gtest/gtest.h>
 
+#include <iomanip>
+#include <cmath>
+#include <limits>
+
 #include "gz/math/Rand.hh"
 #include "gz/math/Vector3.hh"
 #include "gz/math/Helpers.hh"
+#include <gz/utils/SuppressWarning.hh>
 
 using namespace gz;
 
@@ -420,16 +425,16 @@ TEST(HelpersTest, Sort)
 /////////////////////////////////////////////////
 TEST(HelpersTest, Volume)
 {
-  EXPECT_DOUBLE_EQ(IGN_SPHERE_VOLUME(1.0), 4.0*IGN_PI*std::pow(1, 3)/3.0);
-  EXPECT_DOUBLE_EQ(IGN_SPHERE_VOLUME(0.1), 4.0*IGN_PI*std::pow(.1, 3)/3.0);
-  EXPECT_DOUBLE_EQ(IGN_SPHERE_VOLUME(-1.1), 4.0*IGN_PI*std::pow(-1.1, 3)/3.0);
+  EXPECT_DOUBLE_EQ(GZ_SPHERE_VOLUME(1.0), 4.0*GZ_PI*std::pow(1, 3)/3.0);
+  EXPECT_DOUBLE_EQ(GZ_SPHERE_VOLUME(0.1), 4.0*GZ_PI*std::pow(.1, 3)/3.0);
+  EXPECT_DOUBLE_EQ(GZ_SPHERE_VOLUME(-1.1), 4.0*GZ_PI*std::pow(-1.1, 3)/3.0);
 
-  EXPECT_DOUBLE_EQ(IGN_CYLINDER_VOLUME(0.5, 2.0), 2 * IGN_PI * std::pow(.5, 2));
-  EXPECT_DOUBLE_EQ(IGN_CYLINDER_VOLUME(1, -1), -1 * IGN_PI * std::pow(1, 2));
+  EXPECT_DOUBLE_EQ(GZ_CYLINDER_VOLUME(0.5, 2.0), 2 * GZ_PI * std::pow(.5, 2));
+  EXPECT_DOUBLE_EQ(GZ_CYLINDER_VOLUME(1, -1), -1 * GZ_PI * std::pow(1, 2));
 
-  EXPECT_DOUBLE_EQ(IGN_BOX_VOLUME(1, 2, 3), 1 * 2 * 3);
-  EXPECT_DOUBLE_EQ(IGN_BOX_VOLUME(.1, .2, .3),
-                   IGN_BOX_VOLUME_V(math::Vector3d(0.1, 0.2, 0.3)));
+  EXPECT_DOUBLE_EQ(GZ_BOX_VOLUME(1, 2, 3), 1 * 2 * 3);
+  EXPECT_DOUBLE_EQ(GZ_BOX_VOLUME(.1, .2, .3),
+                   GZ_BOX_VOLUME_V(math::Vector3d(0.1, 0.2, 0.3)));
 }
 
 /////////////////////////////////////////////////
@@ -521,9 +526,13 @@ TEST(HelpersTest, Pair)
 
 #if !defined _MSC_VER && !defined __arm__
     // Iterate over large numbers, and check for unique keys.
-    for (math::PairInput a = math::MAX_UI32-5000; a < math::MAX_UI32; a++)
+    for (math::PairInput a = math::MAX_UI32 - 10000;
+         a < math::MAX_UI32 - 500;
+         a += math::Rand::IntUniform(100, 500))
     {
-      for (math::PairInput b = math::MAX_UI32-5000; b < math::MAX_UI32; b++)
+      for (math::PairInput b = math::MAX_UI32 - 10000;
+           b < math::MAX_UI32 - 500;
+           b += math::Rand::IntUniform(100, 500))
       {
         math::PairOutput key = math::Pair(a, b);
         std::tie(c, d) = math::Unpair(key);
@@ -1002,6 +1011,8 @@ TEST(HelpersTest, AppendToStream)
   math::appendToStream(out, pi);
   EXPECT_EQ(out.str(), "0 456 0 3.14159 3.141592654");
 
+// Skip end of test for arm64
+#if !defined __ARM_ARCH
   out << " "
       << std::setprecision(std::numeric_limits<long double>::digits10 + 1);
 
@@ -1020,5 +1031,7 @@ TEST(HelpersTest, AppendToStream)
   EXPECT_EQ(out.str(), "0 456 0 3.14159 3.141592654 3.141592653589793 3.14");
 #else
   EXPECT_EQ(out.str(), "0 456 0 3.14159 3.141592654 3.141592653589793239 3.14");
+#endif
+//  ifndef __ARM_ARCH
 #endif
 }

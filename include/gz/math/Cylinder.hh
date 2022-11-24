@@ -21,7 +21,7 @@
 #include "gz/math/Material.hh"
 #include "gz/math/Quaternion.hh"
 
-namespace ignition
+namespace gz
 {
   namespace math
   {
@@ -29,9 +29,9 @@ namespace ignition
     class CylinderPrivate;
 
     // Inline bracket to help doxygen filtering.
-    inline namespace IGNITION_MATH_VERSION_NAMESPACE {
+    inline namespace GZ_MATH_VERSION_NAMESPACE {
     //
-    /// \class Cylinder Cylinder.hh ignition/math/Cylinder.hh
+    /// \class Cylinder Cylinder.hh gz/math/Cylinder.hh
     /// \brief A representation of a cylinder.
     ///
     /// The cylinder class supports defining a cylinder with a radius,
@@ -66,9 +66,6 @@ namespace ignition
                   const Material &_mat,
                   const Quaternion<Precision> &_rotOffset =
                   Quaternion<Precision>::Identity);
-
-      /// \brief Destructor
-      public: ~Cylinder() = default;
 
       /// \brief Get the radius in meters.
       /// \return The radius of the cylinder in meters.

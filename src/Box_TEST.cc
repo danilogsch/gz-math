@@ -14,8 +14,8 @@
  * limitations under the License.
  *
 */
+
 #include <gtest/gtest.h>
-#include <cmath>
 
 #include "gz/math/Box.hh"
 
@@ -76,6 +76,24 @@ TEST(BoxTest, Constructor)
     math::Boxd box2(math::Vector3d(2.2, 2.0, 10.0),
         math::Material(math::MaterialType::WOOD));
     EXPECT_EQ(box, box2);
+  }
+
+  // Copy Constructor
+  {
+    math::Boxd box(math::Vector3d(2.2, 2.0, 10.0),
+        math::Material(math::MaterialType::WOOD));
+    math::Boxd box2(box);
+    EXPECT_EQ(math::Vector3d(2.2, 2.0, 10.0), box2.Size());
+    EXPECT_EQ(math::Material(math::MaterialType::WOOD), box2.Material());
+  }
+
+  // Move Constructor
+  {
+    math::Boxd box(math::Vector3d(2.2, 2.0, 10.0),
+        math::Material(math::MaterialType::WOOD));
+    math::Boxd box2(std::move(box));
+    EXPECT_EQ(math::Vector3d(2.2, 2.0, 10.0), box2.Size());
+    EXPECT_EQ(math::Material(math::MaterialType::WOOD), box2.Material());
   }
 }
 

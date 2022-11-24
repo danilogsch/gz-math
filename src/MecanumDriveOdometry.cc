@@ -15,10 +15,10 @@
  *
 */
 #include <cmath>
-#include "ignition/math/MecanumDriveOdometry.hh"
-#include "ignition/math/RollingMean.hh"
+#include "gz/math/MecanumDriveOdometry.hh"
+#include "gz/math/RollingMean.hh"
 
-using namespace ignition;
+using namespace gz;
 using namespace math;
 
 // The implementation was borrowed from: https://github.com/ros-controls/ros_controllers/blob/melodic-devel/diff_drive_controller/src/odometry.cpp
@@ -26,15 +26,14 @@ using namespace math;
 // https://robohub.org/drive-kinematics-skid-steer-and-mecanum-ros-twist-included
 // https://research.ijcaonline.org/volume113/number3/pxc3901586.pdf
 
-class ignition::math::MecanumDriveOdometryPrivate
-{
+class gz::math::MecanumDriveOdometry::Implementation{
   /// \brief Integrates the pose.
   /// \param[in] _linear Linear velocity.
   /// \param[in] _lateral Lateral velocity.
   /// \param[in] _angular Angular velocity.
   public: void IntegrateExact(double _linear, double _lateral, double _angular);
-  
-   /// \brief Integrates the poseusing second order Runge-Kuffa aproximation.
+
+  /// \brief Integrates the poseusing second order Runge-Kuffa aproximation.
   /// \param[in] _linear Linear velocity.
   /// \param[in] _lateral Lateral velocity.
   /// \param[in] _angular Angular velocity.
@@ -100,17 +99,11 @@ class ignition::math::MecanumDriveOdometryPrivate
 
 //////////////////////////////////////////////////
 MecanumDriveOdometry::MecanumDriveOdometry(size_t _windowSize)
-  : dataPtr(new MecanumDriveOdometryPrivate)
+  : dataPtr(gz::utils::MakeImpl<Implementation>())
 {
-  this->dataPtr->linearMean.SetWindowSize(_windowSize);
-  this->dataPtr->lateralMean.SetWindowSize(_windowSize);
-  this->dataPtr->angularMean.SetWindowSize(_windowSize);
+  this->SetVelocityRollingWindowSize(_windowSize);
 }
 
-//////////////////////////////////////////////////
-MecanumDriveOdometry::~MecanumDriveOdometry()
-{
-}
 
 //////////////////////////////////////////////////
 void MecanumDriveOdometry::Init(const clock::time_point &_time)
@@ -257,7 +250,7 @@ const Angle &MecanumDriveOdometry::AngularVelocity() const
 }
 
 //////////////////////////////////////////////////
-void MecanumDriveOdometryPrivate::IntegrateRungeKutta2(
+void MecanumDriveOdometry::Implementation::IntegrateRungeKutta2(
     double _linear, double _lateral, double _angular)
 {
   const double direction = *this->heading + _angular * 0.5;
@@ -269,7 +262,7 @@ void MecanumDriveOdometryPrivate::IntegrateRungeKutta2(
 }
 
 //////////////////////////////////////////////////
-void MecanumDriveOdometryPrivate::IntegrateExact(double _linear, double _lateral, double _angular)
+void MecanumDriveOdometry::Implementation::IntegrateExact(double _linear, double _lateral, double _angular)
 {
   if (std::fabs(_angular) < 1e-6)
   {
